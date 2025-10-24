@@ -1,129 +1,221 @@
-"use client"
+'use client'
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Star, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import Image from "next/image"
 
-// 🖼️ Array of background images (add your filenames from /public)
-const backgroundImages = [
-  "/1.jpg",
-  "/2.jpg",
-  "/3.jpg",
-  // "/4.jpeg",
-]
+const backgroundImages = ["/1.jpg", "/2.jpg", "/3.jpg"] as const
 
 export default function HeroSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [animate, setAnimate] = useState(false)
 
-  // ⏳ Auto-scroll background images
+  // Preload + Auto-slide
   useEffect(() => {
-    // Preload images to reduce flickering
-    backgroundImages.forEach((image) => {
-      const img = new Image()
-      img.src = image
+    let loadedCount = 0
+    const total = backgroundImages.length
+
+    const handleLoad = () => {
+      loadedCount++
+      if (loadedCount === total) {
+        setIsLoaded(true)
+        setTimeout(() => setAnimate(true), 100) // Trigger animation after load
+      }
+    }
+
+    const imgs = backgroundImages.map((src) => {
+      const img = new window.Image()
+      img.src = src
+      img.onload = handleLoad
+      img.onerror = handleLoad
+      return img
     })
-    setIsLoading(false)
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % backgroundImages.length)
-    }, 5000) // 5 seconds for smooth transitions
-    return () => clearInterval(interval)
+    }, 5000)
+
+    return () => {
+      clearInterval(interval)
+      imgs.forEach((img) => {
+        img.onload = null
+        img.onerror = null
+      })
+    }
   }, [])
 
   return (
-    <section className="relative w-full py-12 md:py-24 lg:py-32 xl:py-48 overflow-hidden">
-      {/* Background Image Container with Subtle Parallax */}
-      <div className="absolute inset-0 transform-gpu">
-        {backgroundImages.map((image, index) => (
+    <section className="relative h-screen w-full overflow-hidden bg-gray-900">
+      {/* Background */}
+      <div className="absolute inset-0">
+        {backgroundImages.map((src, index) => (
           <div
-            key={image}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1500 ease-in-out ${
-              index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-            } ${isLoading ? "bg-gray-200" : ""}`}
-            style={{
-              backgroundImage: `url(${image})`,
-              transform: "translateY(calc(var(--scroll-y, 0) * -0.2))", // Subtle parallax effect
-            }}
-            aria-hidden="true"
-          />
+            key={src}
+            className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${
+              index === currentIndex && isLoaded ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <Image
+              src={src}
+              alt={`MBI Digital - Hero ${index + 1}`}
+              fill
+              className="object-cover"
+              priority={index === 0}
+              sizes="100vw"
+              quality={90}
+            />
+          </div>
         ))}
       </div>
-      <div className="absolute inset-0 bg-black/50 z-20" /> {/* Darker overlay for contrast */}
 
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-white z-30">
-        <div className="flex flex-col items-center space-y-6 text-center">
-          <div className="space-y-4 animate-fade-in-up">
-            <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl transition-all duration-500">
-              Connect with{" "}
-              <span className="inline-block px-2 py-1 animate-gradient bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-700 bg-[length:200%_auto] text-transparent bg-clip-text">
-                MBI Digital Agency
-              </span>{" "}
-              in Cameroon
-              <span className="block mt-2 text-white/90">
-                for Your Next Big Project
-              </span>
-            </h1>
-            <p className="mx-auto max-w-[700px] text-gray-100 md:text-xl lg:text-2xl font-light">
-              We empower companies and professionals to achieve their fullest potential with innovative digital solutions.
-            </p>
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/30" />
+
+      {/* CENTERED CONTENT WITH SWEET ANIMATIONS */}
+      <div className="relative h-full flex items-center justify-center z-10 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-5xl text-center text-white space-y-8">
+
+          {/* Badge — Fade in + Scale */}
+          <div
+            className={`inline-block transition-all duration-700 ease-out ${
+              animate ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 -translate-y-4"
+            }`}
+            style={{ transitionDelay: "0ms" }}
+          >
+            <Badge className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-bold px-5 py-2 shadow-lg">
+              Trusted by 500+ Businesses
+            </Badge>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link href="/Quota" aria-label="Request a quotation for services">
-              <Button
-                size="lg"
-                className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black"
-              >
-                Get a Quote
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/about" aria-label="Learn more about MBI Digital Agency">
-              <Button
-                size="lg"
-                variant="outline"
-                className="rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 text-white border-white/80 hover:bg-white/20 hover:border-white px-6 py-3 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
-              >
+          {/* Title — Staggered word animation */}
+          <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight space-y-2`}>
+            <span
+              className={`inline-block transition-all duration-700 ease-out ${
+                animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+              }`}
+              style={{ transitionDelay: "200ms" }}
+            >
+              Connect with
+            </span>{" "}
+            <span
+              className={`inline-block px-2 py-1 bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-500 bg-clip-text text-transparent animate-gradient transition-all duration-800 ease-out ${
+                animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+              }`}
+              style={{ transitionDelay: "400ms" }}
+            >
+              MBI Digital
+            </span>{" "}
+            <span
+              className={`inline-block transition-all duration-700 ease-out ${
+                animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+              }`}
+              style={{ transitionDelay: "600ms" }}
+            >
+              in Cameroon
+            </span>
+            <span
+              className={`block mt-3 text-white/95 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium transition-all duration-700 ease-out ${
+                animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+              }`}
+              style={{ transitionDelay: "800ms" }}
+            >
+              for Your Next Big Project
+            </span>
+          </h1>
+
+          {/* Description — Fade in */}
+          <p
+            className={`mx-auto max-w-3xl text-lg sm:text-xl md:text-2xl text-gray-100 leading-relaxed transition-all duration-700 ease-out ${
+              animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+            style={{ transitionDelay: "1000ms" }}
+          >
+            We craft high-performance websites, SEO strategies, and digital solutions that drive real business growth.
+          </p>
+
+          {/* Buttons — Slide up */}
+          <div
+            className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-700 ease-out ${
+              animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+            style={{ transitionDelay: "1200ms" }}
+          >
+            <Button
+              asChild
+              size="lg"
+              className="bg-white text-primary hover:bg-gray-50 font-bold text-lg px-9 py-7 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 min-w-[220px]"
+            >
+              <Link href="/quota">
+                Get a Free Quote
+                <ArrowRight className="ml-3 h-5 w-5" />
+              </Link>
+            </Button>
+
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-2 border-white/80 text-white hover:bg-white/10 font-bold text-lg px-9 py-7 rounded-2xl backdrop-blur-sm transition-all duration-300 min-w-[220px]"
+            >
+              <Link href="/about">
                 Discover More
-              </Button>
-            </Link>
+              </Link>
+            </Button>
+          </div>
+
+          {/* Stats — Slide in from sides */}
+          <div
+            className={`flex justify-center gap-10 md:gap-16 mt-12 flex-wrap transition-all duration-700 ease-out ${
+              animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+            }`}
+            style={{ transitionDelay: "1400ms" }}
+          >
+            <div
+              className={`flex items-center gap-3 transition-all duration-500 ease-out ${
+                animate ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
+              }`}
+              style={{ transitionDelay: "1500ms" }}
+            >
+              <div className="p-2 bg-yellow-400/20 rounded-full">
+                <Star className="h-6 w-6 text-yellow-400 fill-yellow-400" />
+              </div>
+              <div>
+                <div className="text-2xl font-bold">4.9/5</div>
+                <div className="text-sm text-white/70">Client Rating</div>
+              </div>
+            </div>
+
+            <div
+              className={`flex items-center gap-3 transition-all duration-500 ease-out ${
+                animate ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
+              }`}
+              style={{ transitionDelay: "1600ms" }}
+            >
+              <div className="p-2 bg-blue-400/20 rounded-full">
+                <Users className="h-6 w-6 text-blue-400" />
+              </div>
+              <div>
+                <div className="text-2xl font-bold">500+</div>
+                <div className="text-sm text-white/70">Happy Clients</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* CSS for Parallax and Gradient Animation */}
+      {/* Gradient Animation */}
       <style jsx>{`
-        :root {
-          --scroll-y: 0px;
-        }
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes gradient-move {
-          0% {
-            background-position: 0% 50%;
-          }
-          100% {
-            background-position: 200% 50%;
-          }
-        }
-        .animate-fade-in-up {
-          animation: fade-in-up 0.8s ease-out;
+        @keyframes gradient {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
         }
         .animate-gradient {
-          animation: gradient-move 4s linear infinite;
-        }
-        section {
-          scroll-behavior: smooth;
+          background-size: 200% auto;
+          animation: gradient 6s ease infinite;
         }
       `}</style>
     </section>

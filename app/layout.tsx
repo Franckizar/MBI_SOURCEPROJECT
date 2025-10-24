@@ -6,7 +6,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { MouseFollower } from '@/components/mouse-follower';
-import { WhatsAppButton } from '@/components/whatsapp-button';
+
+import WhatsAppWrapper from './../components/whatsapp-wrapper';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -47,7 +48,7 @@ export default function RootLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
-            <WhatsAppButton />
+            <WhatsAppWrapper />
           </div>
         </ThemeProvider>
       </body>
