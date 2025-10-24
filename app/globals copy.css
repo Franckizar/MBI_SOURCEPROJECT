@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base RGB variables for gradients and overrides */
+:root {
+  --foreground-rgb: 33, 33, 33;
+  --background-start-rgb: 245, 245, 250;
+  --background-end-rgb: 255, 255, 255;
+}
+
+/* Dark mode RGB adjustments */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 245, 245, 245;
+    --background-start-rgb: 20, 20, 30;
+    --background-end-rgb: 10, 10, 15;
+  }
+}
+
+/* New vibrant palette */
+@layer base {
+  :root {
+    --background: 0 0% 98%;             /* Off-White */
+    --foreground: 310 20% 20%;          /* Deep Purple */
+    --card: 0 0% 100%;                  /* White Cards */
+    --card-foreground: 310 25% 25%;     /* Slightly lighter purple */
+    --popover: 0 0% 100%;
+    --popover-foreground: 295 50% 35%;  /* Vivid Purple */
+    --primary: 330 80% 60%;             /* Bright Pink */
+    --primary-foreground: 0 0% 100%;    /* White text */
+    --secondary: 280 60% 70%;           /* Soft Lavender */
+    --secondary-foreground: 330 80% 40%;/* Strong Pink */
+    --muted: 300 20% 90%;               /* Soft Pinkish White */
+    --muted-foreground: 280 60% 60%;    /* Lavender Gray */
+    --accent: 260 90% 50%;              /* Vivid Purple */
+    --accent-foreground: 0 0% 100%;     /* White */
+    --destructive: 350 75% 55%;         /* Bright Red-Pink */
+    --destructive-foreground: 0 0% 100%;/* White */
+    --border: 290 25% 85%;              /* Soft Gray-Purple */
+    --input: 290 25% 85%;
+    --ring: 260 90% 50%;                /* Accent Ring */
+    --chart-1: 330 80% 60%;             /* Pink */
+    --chart-2: 280 60% 70%;             /* Lavender */
+    --chart-3: 260 90% 50%;             /* Vivid Purple */
+    --chart-4: 300 25% 90%;             /* Light Pinkish White */
+    --chart-5: 310 20% 20%;             /* Deep Purple */
+    --radius: 0.5rem;
+  }
+
+  /* Dark mode overrides */
+  .dark {
+    --background: 0 0% 10%;             /* Dark background */
+    --foreground: 310 20% 95%;          /* Light text */
+    --card: 0 0% 15%;
+    --card-foreground: 310 20% 95%;
+    --popover: 0 0% 15%;
+    --popover-foreground: 295 50% 80%;
+    --primary: 330 80% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 280 60% 50%;
+    --secondary-foreground: 330 80% 80%;
+    --muted: 300 20% 20%;
+    --muted-foreground: 280 60% 70%;
+    --accent: 260 90% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 350 75% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 290 25% 35%;
+    --input: 290 25% 35%;
+    --ring: 260 90% 50%;
+    --chart-1: 330 80% 50%;
+    --chart-2: 280 60% 50%;
+    --chart-3: 260 90% 50%;
+    --chart-4: 300 25% 20%;
+    --chart-5: 310 20% 95%;
+  }
+}
+
+/* Apply default Tailwind utilities for borders and backgrounds */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
