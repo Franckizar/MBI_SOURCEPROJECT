@@ -11,12 +11,12 @@ export default function OurStory() {
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
               Our Story
             </h2>
-            <p className="text-muted-foreground md:text-lg leading-relaxed">
+            <p className="text-muted-foreground md:text-lg leading-relaxed text-cyan-50">
               Founded with a vision to transform the digital landscape, we've been at the forefront
               of innovation and excellence. Our journey began with a simple idea: to create solutions
               that make a real difference.
             </p>
-            <p className="text-muted-foreground md:text-lg leading-relaxed">
+            <p className="text-muted-foreground md:text-lg leading-relaxed text-cyan-50 ">
               Today, we're proud to serve clients worldwide, delivering exceptional results through
               cutting-edge technology and unwavering dedication to quality. Our team of passionate
               professionals works tirelessly to exceed expectations and drive success.

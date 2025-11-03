@@ -9,10 +9,17 @@ import Image from "next/image"
 
 const backgroundImages = ["/1.jpg", "/2.jpg", "/3.jpg"] as const
 
+const dynamicTexts = [
+  "We craft high-performance websites, SEO strategies, and digital solutions that drive real business growth.",
+  "Transform your online presence with cutting-edge web development and data-driven marketing strategies.",
+  "From concept to execution, we deliver innovative digital experiences that convert visitors into customers."
+] as const
+
 export default function HeroSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
   const [animate, setAnimate] = useState(false)
+  const [textAnimation, setTextAnimation] = useState(false)
 
   // Preload + Auto-slide
   useEffect(() => {
@@ -23,7 +30,7 @@ export default function HeroSection() {
       loadedCount++
       if (loadedCount === total) {
         setIsLoaded(true)
-        setTimeout(() => setAnimate(true), 100) // Trigger animation after load
+        setTimeout(() => setAnimate(true), 100)
       }
     }
 
@@ -36,7 +43,14 @@ export default function HeroSection() {
     })
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % backgroundImages.length)
+      // Start text fade out
+      setTextAnimation(false)
+      
+      // Wait for fade out, then change index and fade in
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % backgroundImages.length)
+        setTimeout(() => setTextAnimation(true), 300)
+      }, 500)
     }, 5000)
 
     return () => {
@@ -47,6 +61,13 @@ export default function HeroSection() {
       })
     }
   }, [])
+
+  // Initialize text animation
+  useEffect(() => {
+    if (animate) {
+      setTextAnimation(true)
+    }
+  }, [animate])
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-gray-900">
@@ -127,15 +148,19 @@ export default function HeroSection() {
             </span>
           </h1>
 
-          {/* Description — Fade in */}
-          <p
-            className={`mx-auto max-w-3xl text-lg sm:text-xl md:text-2xl text-gray-100 leading-relaxed transition-all duration-700 ease-out ${
-              animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}
-            style={{ transitionDelay: "1000ms" }}
-          >
-            We craft high-performance websites, SEO strategies, and digital solutions that drive real business growth.
-          </p>
+          {/* Dynamic Description — Crossfade animation */}
+          <div className="h-24 flex items-center justify-center">
+            <p
+              className={`mx-auto max-w-3xl text-lg sm:text-xl md:text-2xl text-gray-100 leading-relaxed transition-all duration-500 ease-in-out ${
+                textAnimation 
+                  ? "opacity-100 translate-y-0 scale-100" 
+                  : "opacity-0 translate-y-4 scale-95"
+              }`}
+              style={{ transitionDelay: textAnimation ? "100ms" : "0ms" }}
+            >
+              {dynamicTexts[currentIndex]}
+            </p>
+          </div>
 
           {/* Buttons — Slide up */}
           <div
