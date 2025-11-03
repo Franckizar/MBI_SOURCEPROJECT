@@ -22,7 +22,7 @@ export function Header() {
   return (
     <header
       className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-      style={{ height: "90px" }}
+      style={{ height: "130px" }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="flex h-full items-center justify-between">
@@ -32,10 +32,10 @@ export function Header() {
             className="flex items-center gap-2 hover:opacity-80 transition-opacity duration-300"
           >
             <Image
-              src="/logo.png"
+              src="/long logo.png"
               alt="MBI Digital Logo"
-              width={150}
-              height={50}
+              width={300}
+              height={300}
               priority
               className="p-5"
             />

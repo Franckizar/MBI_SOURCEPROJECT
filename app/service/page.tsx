@@ -2,6 +2,7 @@ import { Code, Smartphone, Cloud, Database, Lock, Rocket, ArrowRight, Check } fr
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import Image from "next/image"
 
 const services = [
   {
@@ -45,64 +46,35 @@ const services = [
 export default function ServicesPage() {
   return (
     <main className="flex-1">
-      {/* ENHANCED HERO SECTION */}
-      <section className="relative w-full py-20 md:py-28 lg:py-36 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-purple-500 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-500 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-500 rounded-full blur-3xl animate-pulse delay-500"></div>
+      {/* HERO — EXACTLY LIKE ABOUT US */}
+      <section className="relative w-full py-12 md:py-24 lg:py-32 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/3.jpg"
+            alt="Our Services - MBI Digital Agency"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-black/50" />
         </div>
-        
-        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="flex flex-col items-center space-y-6 text-center">
-            <div className="space-y-4">
-              {/* Animated badge */}
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
-                <span className="text-sm font-medium text-white/90">Premium Digital Solutions</span>
-              </div>
-              
-              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl/none text-white">
+
+        {/* Content */}
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center space-y-4 text-center">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none text-white drop-shadow-lg">
                 Our{" "}
-                <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-500 bg-clip-text text-transparent animate-gradient">
+                <span className="inline-block px-2 py-1 bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-500 bg-clip-text text-transparent">
                   Services
                 </span>
               </h1>
-              <p className="mx-auto max-w-[700px] text-xl text-white/90 md:text-2xl leading-relaxed">
+              <p className="mx-auto max-w-[700px] text-white/90 md:text-xl drop-shadow">
                 Comprehensive digital solutions tailored to your unique needs — from idea to launch and beyond.
               </p>
             </div>
-            
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button 
-                asChild
-                size="lg" 
-                className="rounded-2xl bg-white text-purple-600 hover:bg-gray-50 font-bold px-8 py-6 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-1"
-              >
-                <Link href="/quote">
-                  Get Free Quote
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button 
-                asChild
-                size="lg" 
-                variant="outline"
-                className="rounded-2xl border-2 border-white text-white hover:bg-white/10 font-bold px-8 py-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1"
-              >
-                <Link href="/contact">
-                  Contact Us
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-        
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/50 rounded-full mt-2"></div>
           </div>
         </div>
       </section>

@@ -1,33 +1,56 @@
-// ```tsx
 "use client"
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 export function MouseFollower() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      // Throttle updates with requestAnimationFrame for performance
-      requestAnimationFrame(() => {
-        setMousePosition({ x: event.clientX, y: event.clientY });
-      });
-    };
+    let rafId: number
 
-    window.addEventListener('mousemove', handleMouseMove);
+    const handleMouseMove = (event: MouseEvent) => {
+      rafId = requestAnimationFrame(() => {
+        setMousePosition({ x: event.clientX, y: event.clientY })
+        setIsVisible(true)
+      })
+    }
+
+    const handleMouseLeave = () => {
+      setIsVisible(false)
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseleave', handleMouseLeave)
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseleave', handleMouseLeave)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
+  }, [])
+
+  if (!isVisible) return null
 
   return (
     <div
-      className="fixed pointer-events-none w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 dark:from-purple-400 dark:to-blue-500 opacity-50 z-50 transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-out"
-    //   className="fixed pointer-events-none w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 dark:from-purple-400 dark:to-blue-500 opacity-20 z-50 transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-out"
-      style={{ top: `${mousePosition.y}px`, left: `${mousePosition.x}px` }}
+      className="fixed pointer-events-none z-50 transition-opacity duration-300"
+      style={{
+        top: `${mousePosition.y}px`,
+        left: `${mousePosition.x}px`,
+        transform: 'translate(-50%, -50%)',
+      }}
       aria-hidden="true"
-    />
-  );
+    >
+      <Image
+        src="/logo.png"
+        alt=""
+        width={48}
+        height={48}
+        className="w-12 h-12 drop-shadow-lg animate-pulse"
+        priority
+      />
+    </div>
+  )
 }
-// ```
