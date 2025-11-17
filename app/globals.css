@@ -46,6 +46,9 @@
     --chart-4: 300 25% 90%;             /* Light Pinkish White */
     --chart-5: 310 20% 20%;             /* Deep Purple */
     --radius: 0.5rem;
+  
+
+
   }
 
   /* Dark mode overrides */
@@ -119,6 +122,10 @@
   background-size: 200% auto;
   animation: gradient 6s ease infinite;
 }
+
+
+
+
 }
 
 

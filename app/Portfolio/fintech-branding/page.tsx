@@ -8,7 +8,8 @@ export default function FintechBrandingCaseStudy() {
     <main className="min-h-screen bg-white dark:bg-gray-900">
       <section className="relative h-[70vh] overflow-hidden">
         <Image
-          src="/portfolio/3.jpg"
+          src="/portfolio/
+          3.jpg"
         //   src="/portfolio/3.jpg"
           alt="Fintech Branding"
           fill
